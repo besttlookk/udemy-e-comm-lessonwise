@@ -1,9 +1,14 @@
-import React, { Component } from 'react';
-import './App.css';
+import React, { Component } from "react";
+import "./App.css";
+import Directory from "./components/Directory/Directory";
 
 class App extends Component {
   render() {
-    return <div className='App'>Hello World</div>;
+    return (
+      <div className="App">
+        <Directory />
+      </div>
+    );
   }
 }
 
