@@ -6,6 +6,7 @@ import CartItem from "../CartItem/CartItem.jsx";
 import CustomButton from "../CustomButton/CustomButton";
 import { toggleCartHidden } from "../../redux/cart/cart.actions";
 import "./CartDropdown.scss";
+import { selectCartItems } from "../../redux/cart/cart.selectors.js";
 
 //
 const CartDropdown = ({ cartItems, history, dispatch }) => (
@@ -30,8 +31,12 @@ const CartDropdown = ({ cartItems, history, dispatch }) => (
   </div>
 );
 
-const mapStateToProps = ({ cart: { cartItems } }) => ({
-  cartItems,
+// const mapStateToProps = ({ cart: { cartItems } }) => ({
+//   cartItems,
+// });
+
+const mapStateToProps = (state) => ({
+  cartItems: selectCartItems(state),
 });
 
 // ! if we don not provide mapDispatchToProps, connect will provide "dispatch " function as props inside component

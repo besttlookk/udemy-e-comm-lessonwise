@@ -26,7 +26,6 @@ const CollectionItem = ({ item, addItem }) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-  console.log("collectionItem mapDispatch ran");
   return {
     addItem: (item) => dispatch(addItem(item)),
   };

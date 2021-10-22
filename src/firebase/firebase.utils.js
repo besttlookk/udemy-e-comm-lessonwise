@@ -23,3 +23,42 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
 
   return userRef;
 };
+
+//! to store data to database
+// ! we are using batch add so that if upload fails midway...evenything fails altogether
+export const addCollectionAndDocuments = async (
+  collectionKey,
+  objectsToAdd
+) => {
+  const collectionRef = db.collection(collectionKey);
+
+  const batch = db.batch();
+  objectsToAdd.forEach((obj) => {
+    const newDocRef = collectionRef.doc();
+    batch.set(newDocRef, obj);
+  });
+
+  return await batch.commit();
+};
+
+// ! converting firebase data into
+export const convertCollectionsSnapshotToMap = (collections) => {
+  const transformedCollection = collections.docs.map((doc) => {
+    const { title, items } = doc.data();
+
+    // ! Adding extra data which wa not present in firestore
+    return {
+      routeName: encodeURI(title.toLowerCase()),
+      id: doc.id,
+      title,
+      items,
+    };
+  });
+
+  // console.log(transformedCollection); // In the form of array... we need to normalize it
+
+  return transformedCollection.reduce((accumulator, collection) => {
+    accumulator[collection.title.toLowerCase()] = collection;
+    return accumulator;
+  }, {});
+};

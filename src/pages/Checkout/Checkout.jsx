@@ -1,6 +1,11 @@
 import React from "react";
 import { connect } from "react-redux";
 import CheckoutItem from "../../components/CheckoutItem/CheckoutItem";
+import StripeButton from "../../components/StripeButton/StripeButton";
+import {
+  selectCartItems,
+  selectCartTotalPrice,
+} from "../../redux/cart/cart.selectors";
 
 import "./Checkout.scss";
 
@@ -27,19 +32,27 @@ const CheckoutPage = ({ cartItems, totalPrice }) => (
       <CheckoutItem key={cartItem.id} cartItem={cartItem} />
     ))}
     <div className="total">TOTAL: ${totalPrice}</div>
+    <StripeButton price={totalPrice} />
   </div>
 );
 
-const mapStateToProps = ({ cart: { cartItems } }) => {
-  const totalPrice = cartItems.reduce(
-    (amount, currentItem) => currentItem.quantity * currentItem.price + amount,
-    0
-  );
-  return {
-    totalPrice,
-    cartItems,
-  };
-};
+// const mapStateToProps = ({ cart: { cartItems } }) => {
+//   console.log("checkout mapstatetoprops");
+//   const totalPrice = cartItems.reduce(
+//     (amount, currentItem) => currentItem.quantity * currentItem.price + amount,
+//     0
+//   );
+//   return {
+//     totalPrice,
+//     cartItems,
+//   };
+// };
+
+// ! using selectors and memoization
+const mapStateToProps = (state) => ({
+  totalPrice: selectCartTotalPrice(state),
+  cartItems: selectCartItems(state),
+});
 
 // const mapStateToProps = createStructuredSelector({
 //   cartItems: selectCartItems,
