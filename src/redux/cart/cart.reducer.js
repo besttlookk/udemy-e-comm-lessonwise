@@ -14,6 +14,7 @@ const {
   TOGGLE_CART_HIDDEN,
   CLEAR_ITEM_FROM_CART,
   REMOVE_ITEM_FROM_CART,
+  CLEAR_CART,
 } = CartTypes;
 
 export default (state = INITIAL_STATE, { type, payload }) => {
@@ -36,6 +37,12 @@ export default (state = INITIAL_STATE, { type, payload }) => {
       return {
         ...state,
         cartItems: removeItemFromCart(state.cartItems, payload),
+      };
+
+    case CLEAR_CART:
+      return {
+        ...state,
+        cartItems: [],
       };
 
     default:

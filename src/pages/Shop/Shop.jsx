@@ -2,14 +2,16 @@ import React, { useEffect } from "react";
 import { Route } from "react-router-dom";
 import { connect } from "react-redux";
 
-import { fetchCollectionsStartAsync } from "../../redux/shop/shop.actions";
 import CollectionsOverviewContainer from "../../components/CollectionsOverview/CollectionOverview.container";
 import CollectionPageContainer from "../Collection/Collection.container";
+// import { fetchCollectionsStartAsync } from "../../redux/shop/shop.thunk";
+import { fetchCollectionsStart } from "../../redux/shop/shop.actions";
 
-const Shop = ({ fetchCollectionsStartAsync, match }) => {
+const Shop = ({ fetchCollectionsStart, match }) => {
   useEffect(() => {
-    fetchCollectionsStartAsync();
-  }, [fetchCollectionsStartAsync]);
+    // fetchCollectionsStartAsync();  // use this when using thunk
+    fetchCollectionsStart(); // we will call start request action creator
+  }, [fetchCollectionsStart]);
 
   return (
     <div className="shop-page">
@@ -27,7 +29,7 @@ const Shop = ({ fetchCollectionsStartAsync, match }) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchCollectionsStartAsync: () => dispatch(fetchCollectionsStartAsync()),
+  fetchCollectionsStart: () => dispatch(fetchCollectionsStart()),
 });
 
 export default connect(null, mapDispatchToProps)(Shop);

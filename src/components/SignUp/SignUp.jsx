@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import CustomButton from "../CustomButton/CustomButton";
 import FormInput from "../FormInput/FormInput";
 import "./SignUp.scss";
-import { auth } from "../../firebase/firebase.config";
-import { createUserProfileDocument } from "../../firebase/firebase.utils";
+import { signUpStart } from "../../redux/user/user.actions";
+import { connect } from "react-redux";
 
 const initialFormData = {
   displayName: "",
@@ -12,7 +12,7 @@ const initialFormData = {
   confirmPassword: "",
 };
 
-const SignUp = () => {
+const SignUp = ({ signUpStart }) => {
   const [formInfo, setFormInfo] = useState(initialFormData);
   const { displayName, email, password, confirmPassword } = formInfo;
 
@@ -30,16 +30,19 @@ const SignUp = () => {
       return;
     }
 
-    try {
-      const { user } = await auth.createUserWithEmailAndPassword(
-        email,
-        password
-      );
-      await createUserProfileDocument(user, { displayName });
-      setFormInfo(initialFormData);
-    } catch (error) {
-      console.log(error.message);
-    }
+    signUpStart({ displayName, email, password });
+
+    // ! redux- saga handling now
+    // try {
+    //   const { user } = await auth.createUserWithEmailAndPassword(
+    //     email,
+    //     password
+    //   );
+    //   await createUserProfileDocument(user, { displayName });
+    //   setFormInfo(initialFormData);
+    // } catch (error) {
+    //   console.log(error.message);
+    // }
   };
 
   return (
@@ -85,4 +88,8 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+const mapDispatchToProps = (dispatch) => ({
+  signUpStart: (userCredentials) => dispatch(signUpStart(userCredentials)),
+});
+
+export default connect(null, mapDispatchToProps)(SignUp);
